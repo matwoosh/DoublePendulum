@@ -1,6 +1,5 @@
 import numpy as np
 from data import get_data
-import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
@@ -34,36 +33,7 @@ class Plot:
         ani = animation.FuncAnimation(self.figure, self.animate, np.arange(1, len(self.data[4])),
                                       interval=25, blit=True, init_func=self.init)
         canvas.draw()
-    # def plot_function(self, canvas):
-    #     plt.clf()
-    #     canvas.draw()
-    #     x = self.arguments
-    #     y = []
-    #     for number in x:
-    #         y.append(self.function(number, 0))
-    #     plt.xlabel('x')
-    #     plt.ylabel('y')
-    #     plt.plot(x, y, 'ro')
-    #     canvas.draw()
-    #
-    # def plot_derivative(self, canvas):
-    #     x = self.arguments
-    #     y = []
-    #     if self.deriv_type == DerivativeType.central:
-    #         for number in x:
-    #             y.append(deriv.central(self.function, number, 1)[0])
-    #     elif self.deriv_type == DerivativeType.backward:
-    #         for number in x:
-    #             y.append(deriv.backward(self.function, number, 1)[0])
-    #     elif self.deriv_type == DerivativeType.forward:
-    #         for number in x:
-    #             y.append(deriv.forward(self.function, number, 1)[0])
-    #     else:
-    #         print("Fatal error occured!")
-    #     plt.xlabel('x')
-    #     plt.ylabel('y')
-    #     plt.plot(x, y)
-    #     canvas.draw()
+
 
 
 

@@ -1,14 +1,11 @@
 import sys
 
-from matplotlib.figure import Figure
-from pygsl import deriv
-
 from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, Qt
+from PyQt4.QtCore import Qt
 
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
-import matplotlib.pyplot as plt
 
 from plot import Plot
 
@@ -65,9 +62,9 @@ class Window(QtGui.QDialog):
         layout.addWidget(splitter0)
 
         self.setLayout(layout)
-        self.plot(0)
+        self.plot()
 
-    def plot(self, index):
+    def plot(self):
         p = Plot(self.figure)
         p.plot_animation(self.canvas)
 
