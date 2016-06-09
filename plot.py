@@ -1,11 +1,11 @@
 import numpy as np
-from data import get_data
 import matplotlib.animation as animation
 
 
 class Plot:
-    def __init__(self, figure):
+    def __init__(self, figure, data):
         self.figure = figure
+        self.data = data.get_data()
         self.init_plot()
 
     def init_plot(self):
@@ -14,7 +14,6 @@ class Plot:
         self.line, = ax.plot([], [], 'o-', lw=2)
         self.time_template = 'time = %.1fs'
         self.time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
-        self.data = get_data()
 
     def init(self):
         self.line.set_data([], [])
