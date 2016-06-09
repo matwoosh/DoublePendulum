@@ -90,8 +90,8 @@ class Window(QtGui.QDialog):
         self.plot()
 
     def plot(self):
-        p = Plot(self.figure, self.data)
-        p.plot_animation(self.canvas)
+        self.p = Plot(self.figure, self.data)
+        self.p.plot_animation(self.canvas)
 
     def init_radio(self):
         radio_group = QtGui.QButtonGroup(self.radio_widget)
@@ -142,6 +142,8 @@ class Window(QtGui.QDialog):
 
     def update_animation(self):
         self.data.set_data(self.G, self.L1, self.L2, self.M1, self.M2, self.animation_time)
+        self.p.set_data(self.data.get_data())
+
 
 
 if __name__ == "__main__":

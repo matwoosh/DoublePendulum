@@ -33,6 +33,9 @@ class Plot:
                                       interval=25, blit=True, init_func=self.init)
         canvas.draw()
 
+    def set_data(self, new_data):
+        self.data = new_data
+
 
 
 
