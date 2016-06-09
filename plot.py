@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
@@ -10,7 +9,7 @@ class Plot:
         self.init_plot()
 
     def init_plot(self):
-        ax = self.figure.add_subplot(111, autoscale_on=False, xlim=(-2, 2), ylim=(-2, 2))
+        ax = self.figure.add_subplot(111, autoscale_on=False, xlim=(-5, 5), ylim=(-5, 5))
         ax.grid()
         self.line, = ax.plot([], [], 'o-', lw=2)
         self.time_template = 'time = %.1fs'

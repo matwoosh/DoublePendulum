@@ -4,12 +4,14 @@ import scipy.integrate as integrate
 
 
 class Data:
-    def __init__(self, G, L1, L2, M1, M2, time):
+    def __init__(self, G, L1, L2, M1, M2, th1, th2, time):
         self.G = G
         self.L1 = L1
         self.L2 = L2
         self.M1 = M1
         self.M2 = M2
+        self.th1 = th1
+        self.th2 = th2
         self.animation_time = time
 
     def derivs(self, state, t):
@@ -41,13 +43,11 @@ class Data:
 
         # th1 and th2 are the initial angles (degrees)
         # w10 and w20 are the initial angular velocities (degrees per second)
-        th1 = 120.0
         w1 = 0.0
-        th2 = -10.0
         w2 = 0.0
 
         # initial state
-        state = np.radians([th1, w1, th2, w2])
+        state = np.radians([self.th1, w1, self.th2, w2])
 
         # integrate your ODE using scipy.integrate.
         y = integrate.odeint(self.derivs, state, t)
@@ -59,8 +59,12 @@ class Data:
         y2 = -self.L2*cos(y[:, 2]) + y1
         return x1, y1, x2, y2, y, dt
 
-    def set_data(self, G, M1, M2, time):
+    def set_data(self, G, L1, L2, M1, M2, th1, th2, time):
         self.G = G
+        self.L1 = L1
+        self.L2 = L2
         self.M1 = M1
         self.M2 = M2
+        self.th1 = th1
+        self.th2 = th2
         self.animation_time = time
