@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
@@ -23,14 +24,13 @@ class Plot:
     def animate(self, i):
         thisx = [0, self.data[0][i], self.data[2][i]]
         thisy = [0, self.data[1][i], self.data[3][i]]
-
         self.line.set_data(thisx, thisy)
         self.time_text.set_text(self.time_template % (i*self.data[5]))
         return self.line, self.time_text
 
     def plot_animation(self, canvas):
         ani = animation.FuncAnimation(self.figure, self.animate, np.arange(1, len(self.data[4])),
-                                      interval=25, blit=True, init_func=self.init)
+                                      interval=25, blit=True, init_func=self.init, repeat=False)
         canvas.draw()
 
     def set_data(self, new_data):

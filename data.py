@@ -59,10 +59,8 @@ class Data:
         y2 = -self.L2*cos(y[:, 2]) + y1
         return x1, y1, x2, y2, y, dt
 
-    def set_data(self, G, L1, L2, M1, M2, time):
+    def set_data(self, G, M1, M2, time):
         self.G = G
-        self.L1 = L1
-        self.L2 = L2
         self.M1 = M1
         self.M2 = M2
         self.animation_time = time

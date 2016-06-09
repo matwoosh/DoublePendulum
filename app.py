@@ -20,21 +20,17 @@ class Window(QtGui.QDialog):
         self.L2 = 1.0  # length of pendulum 2 in m
         self.M1 = 1.0  # mass of pendulum 1 in kg
         self.M2 = 1.0  # mass of pendulum 2 in kg
-        self.animation_time = 50.0
+        self.animation_time = 10.0
         self.data = Data(self.G, self.L1, self.L2, self.M1, self.M2, self.animation_time)
         self.lbl1 = QtGui.QLabel("Acceleration:")
-        self.lbl2 = QtGui.QLabel("\nL1:")
-        self.lbl3 = QtGui.QLabel("\nL2:")
         self.lbl4 = QtGui.QLabel("\nM1:")
         self.lbl5 = QtGui.QLabel("\nM2:")
         self.lbl6 = QtGui.QLabel("\nAnimation time:")
         self.radio_widget = QtGui.QWidget(self)
         self.acceleration_input = QtGui.QLineEdit()
-        self.l1_input = QtGui.QLineEdit()
-        self.l2_input = QtGui.QLineEdit()
         self.m1_input = QtGui.QLineEdit()
         self.m2_input = QtGui.QLineEdit()
-        self.update_button = QtGui.QPushButton("Update")
+        self.update_button = QtGui.QPushButton("Animate")
         self.figure = Figure(figsize=(5,5), dpi=100)  # a figure instance to plot on
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
@@ -43,13 +39,9 @@ class Window(QtGui.QDialog):
     def init_ui(self):
         self.init_radio()
         self.acceleration_input.setText("9.8")
-        self.l1_input.setText("1.0")
-        self.l2_input.setText("1.0")
         self.m1_input.setText("1.0")
         self.m2_input.setText("1.0")
         self.acceleration_input.textChanged[str].connect(self.change_argument)
-        self.l1_input.textChanged[str].connect(self.change_argument)
-        self.l2_input.textChanged[str].connect(self.change_argument)
         self.m1_input.textChanged[str].connect(self.change_argument)
         self.m2_input.textChanged[str].connect(self.change_argument)
         self.update_button.clicked.connect(self.update_animation)
@@ -59,10 +51,6 @@ class Window(QtGui.QDialog):
         splitter1 = QtGui.QSplitter(Qt.Vertical)
         splitter1.addWidget(self.lbl1)
         splitter1.addWidget(self.acceleration_input)
-        splitter1.addWidget(self.lbl2)
-        splitter1.addWidget(self.l1_input)
-        splitter1.addWidget(self.lbl3)
-        splitter1.addWidget(self.l2_input)
         splitter1.addWidget(self.lbl4)
         splitter1.addWidget(self.m1_input)
         splitter1.addWidget(self.lbl5)
@@ -87,11 +75,7 @@ class Window(QtGui.QDialog):
         layout.addWidget(splitter0)
 
         self.setLayout(layout)
-        self.plot()
-
-    def plot(self):
         self.p = Plot(self.figure, self.data)
-        self.p.plot_animation(self.canvas)
 
     def init_radio(self):
         radio_group = QtGui.QButtonGroup(self.radio_widget)
@@ -110,6 +94,8 @@ class Window(QtGui.QDialog):
         self.r2.toggled.connect(self.set_animation_time)
         self.r3.toggled.connect(self.set_animation_time)
 
+        self.r0.toggle()
+
     def set_animation_time(self):
         if self.r0.isChecked():
             self.animation_time = 10.0
@@ -127,10 +113,6 @@ class Window(QtGui.QDialog):
             argument = float(text)
             if self.acceleration_input.isActiveWindow():
                 self.G = argument
-            elif self.l1_input.isActiveWindow():
-                self.L1 = argument
-            elif self.l2_input.isActiveWindow():
-                self.L2 = argument
             elif self.m1_input.isActiveWindow():
                 self.M1 = argument
             elif self.m2_input.isActiveWindow():
@@ -141,9 +123,9 @@ class Window(QtGui.QDialog):
             print("Wrong input")
 
     def update_animation(self):
-        self.data.set_data(self.G, self.L1, self.L2, self.M1, self.M2, self.animation_time)
+        self.data.set_data(self.G, self.M1, self.M2, self.animation_time)
         self.p.set_data(self.data.get_data())
-
+        self.p.plot_animation(self.canvas)
 
 
 if __name__ == "__main__":
