@@ -4,12 +4,13 @@ import scipy.integrate as integrate
 
 
 class Data:
-    def __init__(self):
-        self.G = 9.8  # acceleration due to gravity, in m/s^2
-        self.L1 = 1.0  # length of pendulum 1 in m
-        self.L2 = 1.0  # length of pendulum 2 in m
-        self.M1 = 1.0  # mass of pendulum 1 in kg
-        self.M2 = 1.0  # mass of pendulum 2 in kg
+    def __init__(self, G, L1, L2, M1, M2, time):
+        self.G = G
+        self.L1 = L1
+        self.L2 = L2
+        self.M1 = M1
+        self.M2 = M2
+        self.animation_time = time
 
     def derivs(self, state, t):
 
@@ -34,10 +35,9 @@ class Data:
         return dydx
 
     def get_data(self):
-        animation_time = 10.0
         # create a time array from 0..100 sampled at 0.05 second steps
         dt = 0.05
-        t = np.arange(0.0, animation_time, dt)
+        t = np.arange(0.0, self.animation_time, dt)
 
         # th1 and th2 are the initial angles (degrees)
         # w10 and w20 are the initial angular velocities (degrees per second)
@@ -58,3 +58,11 @@ class Data:
         x2 = self.L2*sin(y[:, 2]) + x1
         y2 = -self.L2*cos(y[:, 2]) + y1
         return x1, y1, x2, y2, y, dt
+
+    def set_data(self, G, L1, L2, M1, M2, time):
+        self.G = G
+        self.L1 = L1
+        self.L2 = L2
+        self.M1 = M1
+        self.M2 = M2
+        self.animation_time = time

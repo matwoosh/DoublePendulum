@@ -15,16 +15,25 @@ class Window(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
-        self.argument = 1
+        self.G = 9.8  # acceleration due to gravity, in m/s^2
+        self.L1 = 1.0  # length of pendulum 1 in m
+        self.L2 = 1.0  # length of pendulum 2 in m
+        self.M1 = 1.0  # mass of pendulum 1 in kg
+        self.M2 = 1.0  # mass of pendulum 2 in kg
         self.animation_time = 50.0
-        self.lbl1 = QtGui.QLabel("Animation time:")
-        self.lbl5 = QtGui.QLabel("\nm1:")
-        self.lbl6 = QtGui.QLabel("\nError:")
+        self.data = Data(self.G, self.L1, self.L2, self.M1, self.M2, self.animation_time)
+        self.lbl1 = QtGui.QLabel("Acceleration:")
+        self.lbl2 = QtGui.QLabel("\nL1:")
+        self.lbl3 = QtGui.QLabel("\nL2:")
+        self.lbl4 = QtGui.QLabel("\nM1:")
+        self.lbl5 = QtGui.QLabel("\nM2:")
+        self.lbl6 = QtGui.QLabel("\nAnimation time:")
         self.radio_widget = QtGui.QWidget(self)
-        self.error = QtGui.QLabel("-")
-        self.value = QtGui.QLabel("-")
-        self.derivative = QtGui.QLabel("-")
-        self.edit = QtGui.QLineEdit()
+        self.acceleration_input = QtGui.QLineEdit()
+        self.l1_input = QtGui.QLineEdit()
+        self.l2_input = QtGui.QLineEdit()
+        self.m1_input = QtGui.QLineEdit()
+        self.m2_input = QtGui.QLineEdit()
         self.update_button = QtGui.QPushButton("Update")
         self.figure = Figure(figsize=(5,5), dpi=100)  # a figure instance to plot on
         self.canvas = FigureCanvas(self.figure)
@@ -33,23 +42,36 @@ class Window(QtGui.QDialog):
 
     def init_ui(self):
         self.init_radio()
-        self.edit.textChanged[str].connect(self.change_argument)
+        self.acceleration_input.setText("9.8")
+        self.l1_input.setText("1.0")
+        self.l2_input.setText("1.0")
+        self.m1_input.setText("1.0")
+        self.m2_input.setText("1.0")
+        self.acceleration_input.textChanged[str].connect(self.change_argument)
+        self.l1_input.textChanged[str].connect(self.change_argument)
+        self.l2_input.textChanged[str].connect(self.change_argument)
+        self.m1_input.textChanged[str].connect(self.change_argument)
+        self.m2_input.textChanged[str].connect(self.change_argument)
         self.update_button.clicked.connect(self.update_animation)
 
         layout = QtGui.QVBoxLayout(self)
 
         splitter1 = QtGui.QSplitter(Qt.Vertical)
         splitter1.addWidget(self.lbl1)
+        splitter1.addWidget(self.acceleration_input)
+        splitter1.addWidget(self.lbl2)
+        splitter1.addWidget(self.l1_input)
+        splitter1.addWidget(self.lbl3)
+        splitter1.addWidget(self.l2_input)
+        splitter1.addWidget(self.lbl4)
+        splitter1.addWidget(self.m1_input)
+        splitter1.addWidget(self.lbl5)
+        splitter1.addWidget(self.m2_input)
+        splitter1.addWidget(self.lbl6)
         splitter1.addWidget(self.r0)
         splitter1.addWidget(self.r1)
         splitter1.addWidget(self.r2)
         splitter1.addWidget(self.r3)
-        splitter1.addWidget(self.edit)
-        splitter1.addWidget(self.value)
-        splitter1.addWidget(self.lbl5)
-        splitter1.addWidget(self.derivative)
-        splitter1.addWidget(self.lbl6)
-        splitter1.addWidget(self.error)
         splitter1.addWidget(self.update_button)
         # splitter1.addWidget(left)
 
@@ -68,8 +90,7 @@ class Window(QtGui.QDialog):
         self.plot()
 
     def plot(self):
-        data = Data()
-        p = Plot(self.figure, data)
+        p = Plot(self.figure, self.data)
         p.plot_animation(self.canvas)
 
     def init_radio(self):
@@ -102,20 +123,25 @@ class Window(QtGui.QDialog):
             print("Fatal error occured!")
 
     def change_argument(self, text):
-        # try:
-        #     self.argument = float(text)
-        #     function_data = functions[self.combo.currentIndex()]
-        #     value = function_data[1](self.argument, 0)
-        #     derivative_result = deriv.central(function_data[1], self.argument, 1)
-        #     self.value.setText(str(value))
-        #     self.derivative.setText(str(derivative_result[0]))
-        #     self.error.setText(str(derivative_result[1]))
-        # except:
-        #     print("Wrong input")
-        pass
+        try:
+            argument = float(text)
+            if self.acceleration_input.isActiveWindow():
+                self.G = argument
+            elif self.l1_input.isActiveWindow():
+                self.L1 = argument
+            elif self.l2_input.isActiveWindow():
+                self.L2 = argument
+            elif self.m1_input.isActiveWindow():
+                self.M1 = argument
+            elif self.m2_input.isActiveWindow():
+                self.M2 = argument
+            else:
+                print("Fatal error occured!")
+        except:
+            print("Wrong input")
 
     def update_animation(self):
-        pass
+        self.data.set_data(self.G, self.L1, self.L2, self.M1, self.M2, self.animation_time)
 
 
 if __name__ == "__main__":
